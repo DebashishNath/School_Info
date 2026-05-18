@@ -80,6 +80,7 @@ class AuthServiceDAL extends AuthServiceImpl {
                     (UserDetailsImpl) authentication.getPrincipal();
 
             // ✅ Check if 2FA is enabled
+            assert userDetails != null;
             if (userDetails.getIs2FAEnabled().equals("Y")) {
 
                 System.out.println("Authentication done: " + userDetails.getId());
