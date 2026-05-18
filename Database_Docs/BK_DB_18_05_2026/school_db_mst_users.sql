@@ -16,37 +16,36 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `mst_user`
+-- Table structure for table `mst_users`
 --
 
-DROP TABLE IF EXISTS `mst_user`;
+DROP TABLE IF EXISTS `mst_users`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `mst_user` (
-  `user_id` bigint NOT NULL AUTO_INCREMENT,
-  `school_id` bigint NOT NULL,
-  `full_name` varchar(150) DEFAULT NULL,
-  `username` varchar(100) DEFAULT NULL,
-  `password_hash` varchar(255) DEFAULT NULL,
-  `role_name` varchar(50) DEFAULT NULL,
-  `mobile_number` varchar(20) DEFAULT NULL,
-  `email` varchar(150) DEFAULT NULL,
+CREATE TABLE `mst_users` (
+  `id` bigint NOT NULL AUTO_INCREMENT,
+  `username` varchar(20) DEFAULT NULL,
+  `fullName` varchar(45) DEFAULT NULL,
+  `password` varchar(1045) DEFAULT NULL,
+  `email` varchar(255) DEFAULT NULL,
+  `mobileNo` varchar(20) DEFAULT NULL,
+  `resetToken` varchar(255) DEFAULT NULL,
+  `is_2fa_enabled` varchar(1) DEFAULT NULL,
   `is_active` char(1) DEFAULT 'Y',
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`user_id`),
-  UNIQUE KEY `username` (`username`),
-  KEY `fk_user_school` (`school_id`),
-  CONSTRAINT `fk_user_school` FOREIGN KEY (`school_id`) REFERENCES `mst_school` (`school_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `username` (`username`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `mst_user`
+-- Dumping data for table `mst_users`
 --
 
-LOCK TABLES `mst_user` WRITE;
-/*!40000 ALTER TABLE `mst_user` DISABLE KEYS */;
-/*!40000 ALTER TABLE `mst_user` ENABLE KEYS */;
+LOCK TABLES `mst_users` WRITE;
+/*!40000 ALTER TABLE `mst_users` DISABLE KEYS */;
+INSERT INTO `mst_users` VALUES (1,'Sachin','Sachin Tendulkar','$2a$10$lJZdtGyZ64yV48Oa4kbKYu2Ihu4OTZmVmCCc9yNVFGUEkaS6FDF86','debasis.nath@gmail.com',NULL,NULL,'N','Y','2026-05-18 12:45:52');
+/*!40000 ALTER TABLE `mst_users` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -58,4 +57,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2026-05-18 12:05:44
+-- Dump completed on 2026-05-18 18:38:00

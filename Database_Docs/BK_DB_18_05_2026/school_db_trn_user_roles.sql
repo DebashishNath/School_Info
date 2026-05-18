@@ -16,32 +16,30 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `mst_ai_training`
+-- Table structure for table `trn_user_roles`
 --
 
-DROP TABLE IF EXISTS `mst_ai_training`;
+DROP TABLE IF EXISTS `trn_user_roles`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `mst_ai_training` (
-  `training_id` bigint NOT NULL AUTO_INCREMENT,
-  `school_id` bigint NOT NULL,
-  `question` text NOT NULL,
-  `answer` text NOT NULL,
-  `language_code` varchar(20) DEFAULT 'en',
-  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`training_id`),
-  KEY `fk_training_school` (`school_id`),
-  CONSTRAINT `fk_training_school` FOREIGN KEY (`school_id`) REFERENCES `mst_school` (`school_id`)
+CREATE TABLE `trn_user_roles` (
+  `user_id` bigint NOT NULL,
+  `role_id` int NOT NULL,
+  PRIMARY KEY (`user_id`,`role_id`),
+  KEY `FK_user_roles_role_id` (`role_id`),
+  CONSTRAINT `FK_user_roles_role_id` FOREIGN KEY (`role_id`) REFERENCES `mst_roles` (`id`),
+  CONSTRAINT `FK_user_roles_user_id` FOREIGN KEY (`user_id`) REFERENCES `mst_users` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `mst_ai_training`
+-- Dumping data for table `trn_user_roles`
 --
 
-LOCK TABLES `mst_ai_training` WRITE;
-/*!40000 ALTER TABLE `mst_ai_training` DISABLE KEYS */;
-/*!40000 ALTER TABLE `mst_ai_training` ENABLE KEYS */;
+LOCK TABLES `trn_user_roles` WRITE;
+/*!40000 ALTER TABLE `trn_user_roles` DISABLE KEYS */;
+INSERT INTO `trn_user_roles` VALUES (1,1);
+/*!40000 ALTER TABLE `trn_user_roles` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 

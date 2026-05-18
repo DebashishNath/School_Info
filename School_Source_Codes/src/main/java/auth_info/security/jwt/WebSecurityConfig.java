@@ -70,7 +70,7 @@ public class WebSecurityConfig {
 						.requestMatchers(
 								"/api/auth/**",
 								"/api/test/**",
-								"/api/hr_payroll/**"
+								"/api/school_info/**"
 						).permitAll()
 						.anyRequest().authenticated()
 				);

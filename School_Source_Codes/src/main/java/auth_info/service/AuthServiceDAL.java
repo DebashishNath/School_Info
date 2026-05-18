@@ -115,7 +115,7 @@ class AuthServiceDAL extends AuthServiceImpl {
             );
 
         } catch (Exception ex) {
-
+            System.out.println("Exception is: " + ex.getMessage());
             return ResponseEntity.internalServerError().body(
                     new MessageResponse(
                             CodeConstants.FAILURE.getID(),
