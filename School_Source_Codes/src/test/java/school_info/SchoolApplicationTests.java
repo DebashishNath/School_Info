@@ -1,10 +1,10 @@
-package school_source_codes;
+package school_info;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class SchoolSourceCodesApplicationTests {
+class SchoolApplicationTests {
 
 	@Test
 	void contextLoads() {
