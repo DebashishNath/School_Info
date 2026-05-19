@@ -1,33 +1,45 @@
 package school_info.service;
 
 import school_info.models.Student;
+import utils.MessageResponse;
 
 import java.util.List;
 import java.util.Optional;
 
-public abstract class StudentServiceImpl implements StudentService {
+abstract class StudentServiceImpl implements StudentService {
 
     @Override
-    public abstract Student saveStudent(Student student);
+    public Student updateStudent(Student student){
+        return new StudentServiceDAL().updateStudent(student);
+    }
 
     @Override
-    public abstract Student updateStudent(Student student);
+    public MessageResponse deleteStudent(Long studentId){
+        return new StudentServiceDAL().deleteStudent(studentId);
+    }
 
     @Override
-    public abstract void deleteStudent(Long studentId);
+    public Optional<Student> findByStudentId(Long studentId){
+        return new StudentServiceDAL().findByStudentId(studentId);
+    }
 
     @Override
-    public abstract Optional<Student> findById(Long studentId);
+    public List<Student> findAllStudents(){
+        return new StudentServiceDAL().findAllStudents();
+    }
 
     @Override
-    public abstract List<Student> findAllStudents();
+    public List<Student> findByFirstName(String firstName){
+        return new StudentServiceDAL().findByFirstName(firstName);
+    }
 
     @Override
-    public abstract List<Student> findByFirstName(String firstName);
+    public List<Student> findByLastName(String lastName){
+        return new StudentServiceDAL().findByLastName(lastName);
+    }
 
     @Override
-    public abstract List<Student> findByLastName(String lastName);
-
-    @Override
-    public abstract List<Student> findByGender(String gender);
+    public List<Student> findByGender(String gender){
+        return new StudentServiceDAL().findByGender(gender);
+    }
 }

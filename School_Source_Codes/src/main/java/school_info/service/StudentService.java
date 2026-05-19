@@ -1,19 +1,18 @@
 package school_info.service;
 
 import school_info.models.Student;
+import utils.MessageResponse;
 
 import java.util.List;
 import java.util.Optional;
 
 public interface StudentService {
 
-    Student saveStudent(Student student);
-
     Student updateStudent(Student student);
 
-    void deleteStudent(Long studentId);
+    MessageResponse deleteStudent(Long studentId);
 
-    Optional<Student> findById(Long studentId);
+    Optional<Student> findByStudentId(Long studentId);
 
     List<Student> findAllStudents();
 
