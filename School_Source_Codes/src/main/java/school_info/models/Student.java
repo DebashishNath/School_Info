@@ -58,6 +58,8 @@ public class Student {
     @Transient
     private MessageResponse returnMessage;
 
+    public Student(){}
+
     public Long getStudentId() {
         return studentId;
     }

@@ -41,6 +41,8 @@ public class MstClass {
     @Transient
     private MessageResponse returnMessage;
 
+    public MstClass(){}
+
     public Long getClassId() {
         return classId;
     }

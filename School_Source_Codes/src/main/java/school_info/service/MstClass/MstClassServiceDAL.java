@@ -1,9 +1,9 @@
 package school_info.service.MstClass;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import school_info.models.MstClass;
 import school_info.models.School;
-import school_info.models.Student;
 import school_info.repository.MstClassRepository;
 import utils.CodeConstants;
 import utils.MessageResponse;
@@ -11,6 +11,7 @@ import utils.MessageResponse;
 import java.util.List;
 import java.util.Optional;
 
+@Service
 class MstClassServiceDAL extends MstClassServiceImpl{
 
     @Autowired
