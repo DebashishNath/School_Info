@@ -1,4 +1,4 @@
-package school_info.service;
+package school_info.service.Student;
 
 import school_info.models.Student;
 import school_info.repository.StudentRepository;
