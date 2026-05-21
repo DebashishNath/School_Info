@@ -1,13 +1,12 @@
 package school_info.models;
 
 import jakarta.persistence.*;
-import lombok.Data;
+import utils.MessageResponse;
 
 import java.sql.Timestamp;
 
 @Entity
 @Table(name = "trn_chat_message")
-@Data
 public class TrnChatMessage {
 
     @Id
@@ -27,4 +26,57 @@ public class TrnChatMessage {
 
     @Column(name = "message_time")
     private Timestamp messageTime;
+
+    @Transient
+    private MessageResponse returnMessage;
+
+    public TrnChatMessage(){}
+
+    public Long getMessageId() {
+        return messageId;
+    }
+
+    public void setMessageId(Long messageId) {
+        this.messageId = messageId;
+    }
+
+    public TrnChatSession getSession() {
+        return session;
+    }
+
+    public void setSession(TrnChatSession session) {
+        this.session = session;
+    }
+
+    public String getSenderType() {
+        return senderType;
+    }
+
+    public void setSenderType(String senderType) {
+        this.senderType = senderType;
+    }
+
+    public String getMessageText() {
+        return messageText;
+    }
+
+    public void setMessageText(String messageText) {
+        this.messageText = messageText;
+    }
+
+    public Timestamp getMessageTime() {
+        return messageTime;
+    }
+
+    public void setMessageTime(Timestamp messageTime) {
+        this.messageTime = messageTime;
+    }
+
+    public MessageResponse getReturnMessage() {
+        return returnMessage;
+    }
+
+    public void setReturnMessage(MessageResponse returnMessage) {
+        this.returnMessage = returnMessage;
+    }
 }

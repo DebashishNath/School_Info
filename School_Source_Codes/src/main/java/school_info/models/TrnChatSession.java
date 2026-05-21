@@ -1,13 +1,13 @@
 package school_info.models;
 
 import jakarta.persistence.*;
-import lombok.Data;
+import utils.MessageResponse;
 
 import java.sql.Timestamp;
 
 @Entity
 @Table(name = "trn_chat_session")
-@Data
+
 public class TrnChatSession {
 
     @Id
@@ -34,4 +34,73 @@ public class TrnChatSession {
 
     @Column(name = "ai_handled")
     private String aiHandled;
+
+    @Transient
+    private MessageResponse returnMessage;
+
+    public TrnChatSession(){}
+
+    public Long getSessionId() {
+        return sessionId;
+    }
+
+    public void setSessionId(Long sessionId) {
+        this.sessionId = sessionId;
+    }
+
+    public School getSchool() {
+        return school;
+    }
+
+    public void setSchool(School school) {
+        this.school = school;
+    }
+
+    public TrnParentLead getLead() {
+        return lead;
+    }
+
+    public void setLead(TrnParentLead lead) {
+        this.lead = lead;
+    }
+
+    public Timestamp getSessionStart() {
+        return sessionStart;
+    }
+
+    public void setSessionStart(Timestamp sessionStart) {
+        this.sessionStart = sessionStart;
+    }
+
+    public Timestamp getSessionEnd() {
+        return sessionEnd;
+    }
+
+    public void setSessionEnd(Timestamp sessionEnd) {
+        this.sessionEnd = sessionEnd;
+    }
+
+    public String getCommunicationChannel() {
+        return communicationChannel;
+    }
+
+    public void setCommunicationChannel(String communicationChannel) {
+        this.communicationChannel = communicationChannel;
+    }
+
+    public String getAiHandled() {
+        return aiHandled;
+    }
+
+    public void setAiHandled(String aiHandled) {
+        this.aiHandled = aiHandled;
+    }
+
+    public MessageResponse getReturnMessage() {
+        return returnMessage;
+    }
+
+    public void setReturnMessage(MessageResponse returnMessage) {
+        this.returnMessage = returnMessage;
+    }
 }
