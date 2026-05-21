@@ -1,7 +1,6 @@
 package school_info.service.School;
 
 import school_info.models.School;
-import school_info.models.Student;
 import utils.MessageResponse;
 import java.util.Optional;
 
