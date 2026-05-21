@@ -1,14 +1,20 @@
-package school_info.repository;
+package school_info.service.TrnStudentClass;
 
-import org.springframework.data.jpa.repository.JpaRepository;
 import school_info.models.MstClass;
 import school_info.models.Student;
 import school_info.models.TrnStudentClass;
+import utils.MessageResponse;
 
 import java.util.List;
 import java.util.Optional;
 
-public interface TrnStudentClassRepository extends JpaRepository<TrnStudentClass, Long> {
+public interface TrnStudentClassService {
+
+    TrnStudentClass updateTrnStudentClass(
+            TrnStudentClass trnStudentClass
+    );
+
+    MessageResponse deleteTrnStudentClass(Long studentClassId);
 
     List<TrnStudentClass> findByStudent(Student student);
 

@@ -1,13 +1,12 @@
 package school_info.models;
 
 import jakarta.persistence.*;
-import lombok.Data;
+import utils.MessageResponse;
 
 import java.sql.Timestamp;
 
 @Entity
 @Table(name = "mst_faq")
-@Data
 public class Faq {
 
     @Id
@@ -33,4 +32,73 @@ public class Faq {
 
     @Column(name = "created_at")
     private Timestamp createdAt;
+
+    @Transient
+    private MessageResponse returnMessage;
+
+    public Faq(){}
+
+    public Long getFaqId() {
+        return faqId;
+    }
+
+    public void setFaqId(Long faqId) {
+        this.faqId = faqId;
+    }
+
+    public School getSchool() {
+        return school;
+    }
+
+    public void setSchool(School school) {
+        this.school = school;
+    }
+
+    public String getQuestion() {
+        return question;
+    }
+
+    public void setQuestion(String question) {
+        this.question = question;
+    }
+
+    public String getAnswer() {
+        return answer;
+    }
+
+    public void setAnswer(String answer) {
+        this.answer = answer;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
+
+    public String getIsActive() {
+        return isActive;
+    }
+
+    public void setIsActive(String isActive) {
+        this.isActive = isActive;
+    }
+
+    public Timestamp getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(Timestamp createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public MessageResponse getReturnMessage() {
+        return returnMessage;
+    }
+
+    public void setReturnMessage(MessageResponse returnMessage) {
+        this.returnMessage = returnMessage;
+    }
 }
