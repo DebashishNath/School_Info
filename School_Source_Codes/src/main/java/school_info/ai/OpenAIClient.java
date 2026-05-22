@@ -1,8 +1,10 @@
 package school_info.ai;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.*;
 import org.springframework.stereotype.Component;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.HashMap;
@@ -18,10 +20,12 @@ public class OpenAIClient {
     private static final String OPENAI_URL =
             "https://api.openai.com/v1/chat/completions";
 
-    public String askChatGPT(String prompt){
+    public String askChatGPT(String prompt) {
 
-        try
-        {
+        //System.out.println("Open API Key: " + openaiApiKey);
+
+        try {
+
             RestTemplate restTemplate =
                     new RestTemplate();
 
@@ -37,7 +41,10 @@ public class OpenAIClient {
             Map<String, Object> body =
                     new HashMap<>();
 
-            body.put("model", "gpt-4o-mini");
+            body.put(
+                    "model",
+                    "gpt-4o-mini"
+            );
 
             body.put(
                     "messages",
@@ -50,31 +57,61 @@ public class OpenAIClient {
             );
 
             HttpEntity<Map<String, Object>> request =
-                    new HttpEntity<>(body, headers);
+                    new HttpEntity<>(
+                            body,
+                            headers
+                    );
 
-            ResponseEntity<Map> response =
+            ResponseEntity<Map<String, Object>> response =
                     restTemplate.exchange(
                             OPENAI_URL,
                             HttpMethod.POST,
                             request,
-                            Map.class
+                            new ParameterizedTypeReference<Map<String, Object>>() {
+                            }
                     );
 
-            List choices =
-                    (List) response.getBody()
-                            .get("choices");
+            Map<String, Object> responseBody =
+                    response.getBody();
 
-            Map firstChoice =
-                    (Map) choices.get(0);
+            if (responseBody == null) {
+                return "Empty response from OpenAI.";
+            }
 
-            Map message =
-                    (Map) firstChoice.get("message");
+            List<Map<String, Object>> choices =
+                    (List<Map<String, Object>>) responseBody.get("choices");
 
-            return message.get("content")
-                    .toString();
+            if (choices == null || choices.isEmpty()) {
+                return "No choices returned from OpenAI.";
+            }
 
-        }catch(Exception ex)
+            Map<String, Object> firstChoice =
+                    choices.get(0);
+
+            Map<String, Object> message =
+                    (Map<String, Object>) firstChoice.get("message");
+
+            if (message == null) {
+                return "No message returned from OpenAI.";
+            }
+
+            Object content =
+                    message.get("content");
+
+            return content != null
+                    ? content.toString()
+                    : "No content returned from OpenAI.";
+
+        }
+        catch (HttpClientErrorException ex)
         {
+            System.out.println("Status Code : " + ex.getStatusCode());
+            System.out.println("Response Body : " + ex.getResponseBodyAsString());
+
+            return "OpenAI API Error : " + ex.getResponseBodyAsString();
+        }
+        catch (Exception ex) {
+
             System.out.println(
                     "OpenAI Error : " + ex.getMessage()
             );
