@@ -163,8 +163,7 @@ class AuthServiceDAL extends AuthServiceImpl {
                 .map(GrantedAuthority::getAuthority)
                 .collect(Collectors.toList());
 
-        System.out.println("Inside generateJWTTokenForLogin(): " + jwt);
-
+        //System.out.println("Inside generateJWTTokenForLogin(): " + jwt);
         try {
             return new JwtResponse(
                     jwt,

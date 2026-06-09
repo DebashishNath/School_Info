@@ -1,0 +1,1 @@
+java -Xms512m -Xmx1024m -XX:+UseG1GC -jar D:\ImpProj\School_Info\School_Source_Codes\target\SchoolApplication-0.0.1-SNAPSHOT.jar
