@@ -1,4 +1,4 @@
-package school_info.models;
+package school_info.ai;
 
 public class OllamaResponse {
 

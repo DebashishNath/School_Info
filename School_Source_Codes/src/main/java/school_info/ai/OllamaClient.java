@@ -1,4 +1,4 @@
-package school_info.models;
+package school_info.ai;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;

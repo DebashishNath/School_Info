@@ -18,6 +18,11 @@ abstract class SchoolServiceImpl implements SchoolService{
     }
 
     @Override
+    public Optional<School> findBySchoolId(Long schoolId){
+        return new SchoolServiceDAL().findBySchoolId(schoolId);
+    }
+
+    @Override
     public Optional<School> findBySchoolName(String schoolName){
         return new SchoolServiceDAL().findBySchoolName(schoolName);
     }

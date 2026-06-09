@@ -55,6 +55,11 @@ class SchoolServiceDAL extends SchoolServiceImpl{
     }
 
     @Override
+    public Optional<School> findBySchoolId(Long schoolId){
+        return schoolRep.findBySchoolId(schoolId);
+    }
+
+    @Override
     public Optional<School> findBySchoolName(String schoolName){
         return schoolRep.findBySchoolName(schoolName);
     }

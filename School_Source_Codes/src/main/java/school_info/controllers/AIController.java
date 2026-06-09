@@ -1,26 +1,35 @@
 package school_info.controllers;
 
 import org.springframework.web.bind.annotation.*;
-import school_info.ai.AIService;
+import school_info.ai.AIChatService;
+import school_info.ai.AIRequest;
+import school_info.ai.AIResponse;
 
 @RestController
 @RequestMapping("/api/school_info/ai")
 public class AIController {
 
-    private final AIService aiService;
+    private final AIChatService aiService;
 
-    public AIController(AIService aiService) {
+    public AIController(AIChatService aiService) {
 
         this.aiService = aiService;
 
     }
 
     @PostMapping("/ask")
-    public String ask(@RequestBody String question) {
+    public AIResponse ask(
+            @RequestBody AIRequest request
+    ) {
+
         System.out.println("AIService Started");
-        String returnMessage = aiService.ask(question);
-        System.out.println("AIService Started");
-        return returnMessage;
+
+        AIResponse response =
+                aiService.ask(request);
+
+        System.out.println("AIService Completed");
+
+        return response;
     }
 
 }

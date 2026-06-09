@@ -10,6 +10,8 @@ public interface SchoolService {
 
     MessageResponse deleteSchool(Long schoolId);
 
+    Optional<School> findBySchoolId(Long schoolId);
+
     Optional<School> findBySchoolName(String schoolName);
 
     boolean existsBySchoolName(String schoolName);
