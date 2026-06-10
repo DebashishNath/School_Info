@@ -1,6 +1,5 @@
 package school_info.ai;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import school_info.models.TrnChatMessage;
 import school_info.models.TrnChatSession;
@@ -11,24 +10,33 @@ import java.util.List;
 @Service
 public class ChatHistoryService {
 
-    @Autowired
-    private TrnChatMessageRepository chatMessageRep;
+    private final TrnChatMessageRepository chatMessageRep;
+
+    public ChatHistoryService(
+            TrnChatMessageRepository chatMessageRep
+    ) {
+
+        this.chatMessageRep = chatMessageRep;
+
+    }
 
     public String loadConversation(
             TrnChatSession session
-    ){
+    ) {
+
+        if (session == null) {
+            return "";
+        }
 
         List<TrnChatMessage> messages =
-                chatMessageRep
-                        .findBySessionOrderByMessageTimeAsc(
-                                session
-                        );
+                chatMessageRep.findBySessionOrderByMessageTimeAsc(
+                        session
+                );
 
         StringBuilder history =
                 new StringBuilder();
 
-        for(TrnChatMessage message : messages)
-        {
+        for (TrnChatMessage message : messages) {
 
             history.append(
                     message.getSenderType()
@@ -54,18 +62,17 @@ public class ChatHistoryService {
 
             String question
 
-    ){
+    ) {
 
-        TrnChatMessage chatMessage =
-                new TrnChatMessage();
+        saveMessage(
 
-        chatMessage.setSession(session);
+                session,
 
-        chatMessage.setSenderType("PARENT");
+                "PARENT",
 
-        chatMessage.setMessageText(question);
+                question
 
-        chatMessageRep.save(chatMessage);
+        );
 
     }
 
@@ -75,18 +82,85 @@ public class ChatHistoryService {
 
             String answer
 
-    ){
+    ) {
+
+        saveMessage(
+
+                session,
+
+                "AI",
+
+                answer
+
+        );
+
+    }
+
+    public void saveChatHistory(
+
+            TrnChatSession session,
+
+            String parentQuestion,
+
+            String aiAnswer
+
+    ) {
+
+        saveParentMessage(
+
+                session,
+
+                parentQuestion
+
+        );
+
+        saveAIMessage(
+
+                session,
+
+                aiAnswer
+
+        );
+
+    }
+
+    private void saveMessage(
+
+            TrnChatSession session,
+
+            String senderType,
+
+            String messageText
+
+    ) {
+
+        if (session == null) {
+            return;
+        }
+
+        if (messageText == null ||
+                messageText.trim().isEmpty()) {
+            return;
+        }
 
         TrnChatMessage chatMessage =
                 new TrnChatMessage();
 
-        chatMessage.setSession(session);
+        chatMessage.setSession(
+                session
+        );
 
-        chatMessage.setSenderType("AI");
+        chatMessage.setSenderType(
+                senderType
+        );
 
-        chatMessage.setMessageText(answer);
+        chatMessage.setMessageText(
+                messageText.trim()
+        );
 
-        chatMessageRep.save(chatMessage);
+        chatMessageRep.save(
+                chatMessage
+        );
 
     }
 

@@ -9,11 +9,11 @@ import school_info.ai.AIResponse;
 @RequestMapping("/api/school_info/ai")
 public class AIController {
 
-    private final AIChatService aiService;
+    private final AIChatService aiChatService;
 
-    public AIController(AIChatService aiService) {
+    public AIController(AIChatService aiChatService) {
 
-        this.aiService = aiService;
+        this.aiChatService = aiChatService;
 
     }
 
@@ -25,7 +25,7 @@ public class AIController {
         System.out.println("AIService Started");
 
         AIResponse response =
-                aiService.ask(request);
+                aiChatService.ask(request);
 
         System.out.println("AIService Completed");
 

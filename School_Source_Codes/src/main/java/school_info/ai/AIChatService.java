@@ -1,6 +1,5 @@
 package school_info.ai;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import school_info.models.AITraining;
 import school_info.models.Faq;
@@ -14,46 +13,83 @@ import java.util.List;
 @Service
 public class AIChatService {
 
-    @Autowired
-    private AIClient aiClient;
+    private final AIClient aiClient;
 
-    @Autowired
-    private PromptBuilder promptBuilder;
+    private final PromptBuilder promptBuilder;
 
-    @Autowired
-    private AIResponseParser aiResponseParser;
+    private final AIResponseParser aiResponseParser;
 
-    @Autowired
-    private AIIntentDetector aiIntentDetector;
+    private final AIIntentDetector aiIntentDetector;
 
-    @Autowired
-    private AIActionExecutor aiActionExecutor;
+    private final AIActionExecutor aiActionExecutor;
 
-    @Autowired
-    private ChatHistoryService chatHistoryService;
+    private final ChatHistoryService chatHistoryService;
 
-    @Autowired
-    private SchoolService schoolService;
+    private final SchoolService schoolService;
 
-    @Autowired
-    private FaqService faqService;
+    private final FaqService faqService;
 
-    @Autowired
-    private AITrainingService aiTrainingService;
+    private final AITrainingService aiTrainingService;
+
+    public AIChatService(
+
+            AIClient aiClient,
+
+            PromptBuilder promptBuilder,
+
+            AIResponseParser aiResponseParser,
+
+            AIIntentDetector aiIntentDetector,
+
+            AIActionExecutor aiActionExecutor,
+
+            ChatHistoryService chatHistoryService,
+
+            SchoolService schoolService,
+
+            FaqService faqService,
+
+            AITrainingService aiTrainingService
+
+    ) {
+
+        this.aiClient = aiClient;
+        this.promptBuilder = promptBuilder;
+        this.aiResponseParser = aiResponseParser;
+        this.aiIntentDetector = aiIntentDetector;
+        this.aiActionExecutor = aiActionExecutor;
+        this.chatHistoryService = chatHistoryService;
+        this.schoolService = schoolService;
+        this.faqService = faqService;
+        this.aiTrainingService = aiTrainingService;
+
+    }
 
     public AIResponse ask(
             AIRequest request
     ) {
 
-        AIResponse aiResponse =
+        AIResponse response =
                 new AIResponse();
 
         try {
 
+            System.out.println("==================================");
+            System.out.println("AI CHAT REQUEST STARTED");
+            System.out.println("Question : " + request.getQuestion());
+            System.out.println("School Id : " + request.getSchoolId());
+            System.out.println("==================================");
+
             School school =
-                    schoolService.findBySchoolId(
-                            request.getSchoolId()
-                    ).orElseThrow();
+                    schoolService
+                            .findBySchoolId(
+                                    request.getSchoolId()
+                            )
+                            .orElseThrow(
+                                    () -> new RuntimeException(
+                                            "School not found."
+                                    )
+                            );
 
             List<Faq> faqList =
                     faqService.findBySchoolAndIsActive(
@@ -66,43 +102,153 @@ public class AIChatService {
                             school
                     );
 
+            System.out.println(
+                    "FAQ Count : " + faqList.size()
+            );
+
+            System.out.println(
+                    "Training Count : " + trainingList.size()
+            );
+
             IntentType intent =
                     aiIntentDetector.detectIntent(
                             request.getQuestion()
                     );
 
+            System.out.println(
+                    "Detected Intent : " + intent.name()
+            );
+
             String prompt =
                     promptBuilder.buildPrompt(
+
                             school,
+
                             faqList,
+
                             trainingList,
+
                             request.getQuestion()
+
                     );
 
+            System.out.println("==================================");
+            System.out.println("PROMPT");
+            System.out.println(prompt);
+            System.out.println("==================================");
+
             String rawResponse =
-                    aiClient.askAI(prompt);
+                    aiClient.askAI(
+                            prompt
+                    );
+
+            System.out.println("==================================");
+            System.out.println("RAW AI RESPONSE");
+            System.out.println(rawResponse);
+            System.out.println("==================================");
 
             String finalResponse =
                     aiResponseParser.parseResponse(
                             rawResponse
                     );
 
-            aiResponse.setAnswer(finalResponse);
-            aiResponse.setIntent(intent.name());
-            aiResponse.setStatus("SUCCESS");
-            aiResponse.setSessionId(request.getSessionId());
-            aiResponse.setLeadId(request.getLeadId());
+            if (finalResponse == null ||
+                    finalResponse.trim().isEmpty()) {
 
-            return aiResponse;
+                finalResponse =
+                        "Sorry, I don't have that information. Please contact the school office.";
 
-        } catch (Exception ex) {
+            }
 
-            aiResponse.setStatus("FAILURE");
-            aiResponse.setAnswer("Unable to process request.");
-            aiResponse.setIntent(IntentType.UNKNOWN.name());
-            aiResponse.setActionMessage(ex.getMessage());
+            response.setStatus(
+                    "SUCCESS"
+            );
 
-            return aiResponse;
+            response.setIntent(
+                    intent.name()
+            );
+
+            response.setAnswer(
+                    finalResponse
+            );
+
+            response.setLeadId(
+                    request.getLeadId()
+            );
+
+            response.setSessionId(
+                    request.getSessionId()
+            );
+
+            response.setActionPerformed(
+                    false
+            );
+
+            response.setActionMessage(
+                    null
+            );
+
+//            chatHistoryService.saveChatHistory(
+//
+//                    request.getSessionId(),
+//
+//                    request.getQuestion(),
+//
+//                    finalResponse
+//
+//            );
+//
+//            aiActionExecutor.execute(
+//
+//                    intent,
+//
+//                    request,
+//
+//                    response
+//
+//            );
+
+            System.out.println("==================================");
+            System.out.println("AI CHAT REQUEST COMPLETED");
+            System.out.println("==================================");
+
+            return response;
+
+        }
+        catch (Exception ex) {
+
+            ex.printStackTrace();
+
+            response.setStatus(
+                    "FAILURE"
+            );
+
+            response.setIntent(
+                    IntentType.UNKNOWN.name()
+            );
+
+            response.setAnswer(
+                    "Unable to process your request."
+            );
+
+            response.setLeadId(
+                    request.getLeadId()
+            );
+
+            response.setSessionId(
+                    request.getSessionId()
+            );
+
+            response.setActionPerformed(
+                    false
+            );
+
+            response.setActionMessage(
+                    ex.getMessage()
+            );
+
+            return response;
+
         }
 
     }
