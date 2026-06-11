@@ -12,24 +12,15 @@ public class AIController {
     private final AIChatService aiChatService;
 
     public AIController(AIChatService aiChatService) {
-
         this.aiChatService = aiChatService;
-
     }
 
     @PostMapping("/ask")
-    public AIResponse ask(
-            @RequestBody AIRequest request
-    ) {
-
-        System.out.println("AIService Started");
-
-        AIResponse response =
-                aiChatService.ask(request);
-
-        System.out.println("AIService Completed");
-
+    public AIResponse ask(@RequestBody AIRequest request)
+    {
+        System.out.println("REQUEST RECEIVED: " + request);
+        AIResponse response = aiChatService.ask(request);
+        System.out.println("RESPONSE: " + response);
         return response;
     }
-
 }

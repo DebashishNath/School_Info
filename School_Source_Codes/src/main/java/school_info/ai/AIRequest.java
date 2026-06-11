@@ -10,11 +10,28 @@ public class AIRequest {
 
     private String question;
 
+    public AIRequest() {
+    }
+
+    public AIRequest(
+            Long schoolId,
+            Long leadId,
+            Long sessionId,
+            String question
+    ) {
+        this.schoolId = schoolId;
+        this.leadId = leadId;
+        this.sessionId = sessionId;
+        this.question = question;
+    }
+
     public Long getSchoolId() {
         return schoolId;
     }
 
-    public void setSchoolId(Long schoolId) {
+    public void setSchoolId(
+            Long schoolId
+    ) {
         this.schoolId = schoolId;
     }
 
@@ -22,7 +39,9 @@ public class AIRequest {
         return leadId;
     }
 
-    public void setLeadId(Long leadId) {
+    public void setLeadId(
+            Long leadId
+    ) {
         this.leadId = leadId;
     }
 
@@ -30,7 +49,9 @@ public class AIRequest {
         return sessionId;
     }
 
-    public void setSessionId(Long sessionId) {
+    public void setSessionId(
+            Long sessionId
+    ) {
         this.sessionId = sessionId;
     }
 
@@ -38,7 +59,22 @@ public class AIRequest {
         return question;
     }
 
-    public void setQuestion(String question) {
+    public void setQuestion(
+            String question
+    ) {
         this.question = question;
     }
+
+    @Override
+    public String toString() {
+
+        return "AIRequest{" +
+                "schoolId=" + schoolId +
+                ", leadId=" + leadId +
+                ", sessionId=" + sessionId +
+                ", question='" + question + '\'' +
+                '}';
+
+    }
+
 }

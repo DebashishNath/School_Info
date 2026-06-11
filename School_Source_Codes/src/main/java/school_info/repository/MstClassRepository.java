@@ -11,10 +11,8 @@ public interface MstClassRepository extends JpaRepository<MstClass, Long> {
 
     List<MstClass> findBySchool(School school);
 
-    Optional<MstClass> findBySchoolAndClassName(
-            School school,
-            String className
-    );
+    Optional<MstClass> findBySchoolAndClassName(School school,String className);
 
     List<MstClass> findByAvailableSeatsGreaterThan(Integer seats);
+
 }

@@ -8,13 +8,18 @@ public class AIResponse {
 
     private String intent;
 
-    private boolean actionPerformed;
+    private Boolean actionPerformed;
 
     private String actionMessage;
+
+    private Long schoolId;
 
     private Long sessionId;
 
     private Long leadId;
+
+    public AIResponse() {
+    }
 
     public String getStatus() {
         return status;
@@ -46,12 +51,12 @@ public class AIResponse {
         this.intent = intent;
     }
 
-    public boolean isActionPerformed() {
+    public Boolean getActionPerformed() {
         return actionPerformed;
     }
 
     public void setActionPerformed(
-            boolean actionPerformed
+            Boolean actionPerformed
     ) {
         this.actionPerformed = actionPerformed;
     }
@@ -64,6 +69,16 @@ public class AIResponse {
             String actionMessage
     ) {
         this.actionMessage = actionMessage;
+    }
+
+    public Long getSchoolId() {
+        return schoolId;
+    }
+
+    public void setSchoolId(
+            Long schoolId
+    ) {
+        this.schoolId = schoolId;
     }
 
     public Long getSessionId() {
@@ -84,6 +99,22 @@ public class AIResponse {
             Long leadId
     ) {
         this.leadId = leadId;
+    }
+
+    @Override
+    public String toString() {
+
+        return "AIResponse{" +
+                "status='" + status + '\'' +
+                ", answer='" + answer + '\'' +
+                ", intent='" + intent + '\'' +
+                ", actionPerformed=" + actionPerformed +
+                ", actionMessage='" + actionMessage + '\'' +
+                ", schoolId=" + schoolId +
+                ", sessionId=" + sessionId +
+                ", leadId=" + leadId +
+                '}';
+
     }
 
 }

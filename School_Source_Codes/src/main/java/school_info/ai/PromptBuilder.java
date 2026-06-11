@@ -10,6 +10,9 @@ import java.util.List;
 @Component
 public class PromptBuilder {
 
+    private static final String DEFAULT_RESPONSE =
+            "Sorry, I don't have that information. Please contact the school office.";
+
     public String buildPrompt(
 
             School school,
@@ -23,88 +26,221 @@ public class PromptBuilder {
     ) {
 
         StringBuilder prompt =
-                new StringBuilder();
+                new StringBuilder(4096);
+
+        appendSystemInstruction(
+                prompt
+        );
+
+        appendSchoolInformation(
+
+                prompt,
+
+                school
+
+        );
+
+        appendFaqData(
+
+                prompt,
+
+                faqList
+
+        );
+
+        appendTrainingData(
+
+                prompt,
+
+                trainingList
+
+        );
+
+        appendParentQuestion(
+
+                prompt,
+
+                parentQuestion
+
+        );
+
+        return prompt.toString();
+
+    }
+
+    private void appendSystemInstruction(
+            StringBuilder prompt
+    ) {
 
         prompt.append("""
-You are an AI Admission Assistant for a school.
 
-==========================
-IMPORTANT INSTRUCTIONS
-==========================
+You are an AI Admission Assistant.
 
-1. Answer ONLY from the FAQ Data and Training Data provided below.
+Rules:
 
-2. NEVER create, assume or guess any information.
+1. Answer ONLY from the information provided.
 
-3. NEVER change any amount, date, class name or document name.
+2. Never guess.
 
-4. If multiple questions are similar, use the closest matching FAQ or Training Data.
+3. Never modify fees, dates or documents.
 
-5. If the answer is not available in the data, reply exactly:
-
-Sorry, I don't have that information. Please contact the school office.
-
-6. Keep the answer short, professional and friendly.
-
-7. Do NOT mention that you are using FAQ or Training Data.
-
-8. Do NOT use your own knowledge.
-
-==========================
+4. If information is unavailable reply exactly:
 
 """);
 
-        prompt.append("School Information\n");
-        prompt.append("------------------------------\n");
-        prompt.append("School Name : ")
-                .append(school.getSchoolName())
-                .append("\n\n");
+        prompt.append(DEFAULT_RESPONSE);
 
-        prompt.append("FAQ DATA\n");
-        prompt.append("------------------------------\n");
+        prompt.append("""
+
+5. Keep answers within 2 sentences.
+
+6. Return only the final answer.
+
+==================================================
+
+""");
+
+    }
+
+    private void appendSchoolInformation(
+
+            StringBuilder prompt,
+
+            School school
+
+    ) {
+
+        if (school == null) {
+
+            return;
+
+        }
+
+        prompt.append("School : ");
+
+        prompt.append(
+
+                school.getSchoolName()
+
+        );
+
+        prompt.append("\n\n");
+
+    }
+
+    private void appendFaqData(
+
+            StringBuilder prompt,
+
+            List<Faq> faqList
+
+    ) {
+
+        if (faqList == null ||
+                faqList.isEmpty()) {
+
+            return;
+
+        }
+
+        prompt.append("FAQ\n");
+
+        prompt.append("--------------------\n");
 
         for (Faq faq : faqList) {
 
-            prompt.append("Question : ")
-                    .append(faq.getQuestion())
-                    .append("\n");
+            if (faq == null) {
 
-            prompt.append("Answer : ")
-                    .append(faq.getAnswer())
-                    .append("\n\n");
+                continue;
+
+            }
+
+            prompt.append("Q: ");
+
+            prompt.append(
+                    faq.getQuestion()
+            );
+
+            prompt.append("\n");
+
+            prompt.append("A: ");
+
+            prompt.append(
+                    faq.getAnswer()
+            );
+
+            prompt.append("\n\n");
 
         }
 
-        prompt.append("TRAINING DATA\n");
-        prompt.append("------------------------------\n");
+    }
 
-        for (AITraining aiTraining : trainingList) {
+    private void appendTrainingData(
 
-            prompt.append("Question : ")
-                    .append(aiTraining.getQuestion())
-                    .append("\n");
+            StringBuilder prompt,
 
-            prompt.append("Answer : ")
-                    .append(aiTraining.getAnswer())
-                    .append("\n\n");
+            List<AITraining> trainingList
+
+    ) {
+
+        if (trainingList == null ||
+                trainingList.isEmpty()) {
+
+            return;
 
         }
 
-        prompt.append("PARENT QUESTION\n");
-        prompt.append("------------------------------\n");
-        prompt.append(parentQuestion);
-        prompt.append("\n\n");
+        prompt.append("Training\n");
 
-        prompt.append("""
-Now generate ONLY the final answer.
+        prompt.append("--------------------\n");
 
-Do not explain your reasoning.
+        for (AITraining training : trainingList) {
 
-If the answer exists in FAQ or Training Data, return exactly that answer.
+            if (training == null) {
 
-""");
+                continue;
 
-        return prompt.toString();
+            }
+
+            prompt.append("Q: ");
+
+            prompt.append(
+                    training.getQuestion()
+            );
+
+            prompt.append("\n");
+
+            prompt.append("A: ");
+
+            prompt.append(
+                    training.getAnswer()
+            );
+
+            prompt.append("\n\n");
+
+        }
+
+    }
+
+    private void appendParentQuestion(
+
+            StringBuilder prompt,
+
+            String question
+
+    ) {
+
+        prompt.append("Parent Question\n");
+
+        prompt.append("--------------------\n");
+
+        prompt.append(
+
+                question == null ? "" : question.trim()
+
+        );
+
+        prompt.append("\n");
 
     }
 

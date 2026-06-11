@@ -4,39 +4,57 @@ import org.springframework.stereotype.Service;
 import school_info.models.TrnChatMessage;
 import school_info.models.TrnChatSession;
 import school_info.repository.TrnChatMessageRepository;
+import school_info.repository.TrnChatSessionRepository;
 
 import java.util.List;
 
 @Service
 public class ChatHistoryService {
 
-    private final TrnChatMessageRepository chatMessageRep;
+    private static final String PARENT = "PARENT";
+
+    private static final String AI = "AI";
+
+    private final TrnChatSessionRepository chatSessionRepository;
+
+    private final TrnChatMessageRepository chatMessageRepository;
 
     public ChatHistoryService(
-            TrnChatMessageRepository chatMessageRep
+
+            TrnChatSessionRepository chatSessionRepository,
+
+            TrnChatMessageRepository chatMessageRepository
+
     ) {
 
-        this.chatMessageRep = chatMessageRep;
+        this.chatSessionRepository = chatSessionRepository;
+        this.chatMessageRepository = chatMessageRepository;
 
     }
 
     public String loadConversation(
-            TrnChatSession session
+            Long sessionId
     ) {
 
+        TrnChatSession session =
+                getSession(sessionId);
+
         if (session == null) {
+
             return "";
+
         }
 
-        List<TrnChatMessage> messages =
-                chatMessageRep.findBySessionOrderByMessageTimeAsc(
-                        session
-                );
+        List<TrnChatMessage> messageList =
+                chatMessageRepository
+                        .findBySessionOrderByMessageTimeAsc(
+                                session
+                        );
 
         StringBuilder history =
                 new StringBuilder();
 
-        for (TrnChatMessage message : messages) {
+        for (TrnChatMessage message : messageList) {
 
             history.append(
                     message.getSenderType()
@@ -56,49 +74,9 @@ public class ChatHistoryService {
 
     }
 
-    public void saveParentMessage(
-
-            TrnChatSession session,
-
-            String question
-
-    ) {
-
-        saveMessage(
-
-                session,
-
-                "PARENT",
-
-                question
-
-        );
-
-    }
-
-    public void saveAIMessage(
-
-            TrnChatSession session,
-
-            String answer
-
-    ) {
-
-        saveMessage(
-
-                session,
-
-                "AI",
-
-                answer
-
-        );
-
-    }
-
     public void saveChatHistory(
 
-            TrnChatSession session,
+            Long sessionId,
 
             String parentQuestion,
 
@@ -106,21 +84,52 @@ public class ChatHistoryService {
 
     ) {
 
-        saveParentMessage(
+        TrnChatSession session =
+                getSession(sessionId);
+
+        if (session == null) {
+
+            return;
+
+        }
+
+        saveMessage(
 
                 session,
+
+                PARENT,
 
                 parentQuestion
 
         );
 
-        saveAIMessage(
+        saveMessage(
 
                 session,
+
+                AI,
 
                 aiAnswer
 
         );
+
+    }
+
+    private TrnChatSession getSession(
+            Long sessionId
+    ) {
+
+        if (sessionId == null) {
+
+            return null;
+
+        }
+
+        return chatSessionRepository
+
+                .findById(sessionId)
+
+                .orElse(null);
 
     }
 
@@ -135,31 +144,35 @@ public class ChatHistoryService {
     ) {
 
         if (session == null) {
+
             return;
+
         }
 
         if (messageText == null ||
                 messageText.trim().isEmpty()) {
+
             return;
+
         }
 
-        TrnChatMessage chatMessage =
+        TrnChatMessage message =
                 new TrnChatMessage();
 
-        chatMessage.setSession(
+        message.setSession(
                 session
         );
 
-        chatMessage.setSenderType(
+        message.setSenderType(
                 senderType
         );
 
-        chatMessage.setMessageText(
+        message.setMessageText(
                 messageText.trim()
         );
 
-        chatMessageRep.save(
-                chatMessage
+        chatMessageRepository.save(
+                message
         );
 
     }
