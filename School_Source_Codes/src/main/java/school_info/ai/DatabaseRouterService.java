@@ -13,6 +13,8 @@ import school_info.service.School.SchoolService;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Service
 public class DatabaseRouterService {
@@ -178,12 +180,19 @@ public class DatabaseRouterService {
 
         text = text.toLowerCase();
 
-        if (text.contains("std 1") || text.contains("class 1")) return "1";
-        if (text.contains("std 2") || text.contains("class 2")) return "2";
-        if (text.contains("std 3") || text.contains("class 3")) return "3";
-        if (text.contains("std 4") || text.contains("class 4")) return "4";
-        if (text.contains("std 5") || text.contains("class 5")) return "5";
-        if (text.contains("std 6") || text.contains("class 6")) return "6";
+        Pattern pattern = Pattern.compile("\\bstd\\s*(\\d+)\\b|\\bclass\\s*(\\d+)\\b");
+        Matcher matcher = pattern.matcher(text);
+
+        if (matcher.find()) {
+
+            if (matcher.group(1) != null) {
+                return matcher.group(1);
+            }
+
+            if (matcher.group(2) != null) {
+                return matcher.group(2);
+            }
+        }
 
         return null;
     }

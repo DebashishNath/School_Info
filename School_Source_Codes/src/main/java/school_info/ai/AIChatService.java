@@ -9,6 +9,8 @@ import school_info.service.Faq.FaqService;
 import school_info.service.School.SchoolService;
 
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Service
 public class AIChatService {
