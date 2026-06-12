@@ -8,44 +8,59 @@ public class AIResponseParser {
     private static final String DEFAULT_RESPONSE =
             "Sorry, I don't have that information. Please contact the school office.";
 
-    public String parseResponse(
-            String rawResponse
-    ) {
+    public String parseResponse(String response)
+    {
+        if (response == null) {
+            return DEFAULT_RESPONSE;
+        }
+        String answer = response.trim();
 
-        if (rawResponse == null ||
-                rawResponse.trim().isEmpty()) {
+        /*
+         * Remove markdown code blocks
+         */
+
+        answer = answer.replace("```", "");
+
+        /*
+         * Remove unnecessary labels
+         */
+
+        answer = answer.replace("Answer:", "");
+        answer = answer.replace("Response:", "");
+
+        /*
+         * Remove multiple spaces
+         */
+
+        answer = answer.replaceAll("\\s+", " ").trim();
+
+        /*
+         * Empty response
+         */
+
+        if (answer.isEmpty()) {
 
             return DEFAULT_RESPONSE;
 
         }
 
-        String response =
-                rawResponse
-                        .replaceAll("(?s)<think>.*?</think>", "")
-                        .replace("\r", " ")
-                        .replace("\n", " ")
-                        .replaceAll("\\s+", " ")
-                        .trim();
+        /*
+         * Reject common hallucination placeholders
+         */
 
-        if (response.isEmpty()) {
+        String lower = answer.toLowerCase();
 
-            return DEFAULT_RESPONSE;
-
-        }
-
-        if ("Unable to get AI response.".equalsIgnoreCase(response)) {
+        if (lower.contains("i don't know")
+                || lower.contains("i do not know")
+                || lower.contains("no information provided")
+                || lower.contains("information is unavailable")
+                || lower.contains("cannot determine")) {
 
             return DEFAULT_RESPONSE;
 
         }
 
-        if ("No response generated.".equalsIgnoreCase(response)) {
-
-            return DEFAULT_RESPONSE;
-
-        }
-
-        return response;
+        return answer;
 
     }
 

@@ -3,8 +3,11 @@ package school_info.ai;
 public enum IntentType {
 
     /*
-     * Database / Direct Response
+     * ===========================================
+     * Structured Database Intents
+     * ===========================================
      */
+
     FEE_ENQUIRY,
 
     ADMISSION_ENQUIRY,
@@ -12,6 +15,10 @@ public enum IntentType {
     DOCUMENT_ENQUIRY,
 
     TRANSPORT_ENQUIRY,
+
+    CLASS_ENQUIRY,
+
+    SEAT_ENQUIRY,
 
     SCHOOL_TIMING,
 
@@ -21,34 +28,42 @@ public enum IntentType {
 
     HOLIDAY_ENQUIRY,
 
-    CLASS_ENQUIRY,
-
-    SYLLABUS_ENQUIRY,
+    EVENT_ENQUIRY,
 
     RESULT_ENQUIRY,
 
-    EVENT_ENQUIRY,
+    SYLLABUS_ENQUIRY,
+
+    TEACHER_ENQUIRY,
+
+    PRINCIPAL_ENQUIRY,
 
     /*
-     * Agent Actions
+     * ===========================================
+     * Workflow / Actions
+     * ===========================================
      */
+
     CREATE_LEAD,
 
     UPDATE_LEAD,
-
-    SEND_ADMISSION_FORM,
 
     BOOK_VISIT,
 
     SCHEDULE_CALLBACK,
 
-    FOLLOWUP,
-
     SEND_BROCHURE,
 
+    SEND_ADMISSION_FORM,
+
+    FOLLOW_UP,
+
     /*
-     * AI / Knowledge
+     * ===========================================
+     * Knowledge Base
+     * ===========================================
      */
+
     FAQ,
 
     GENERAL_CHAT,
@@ -58,8 +73,31 @@ public enum IntentType {
     STUDENT_COUNSELLING,
 
     /*
-     * Default
+     * ===========================================
+     * Future Extensions
+     * ===========================================
      */
+
+    ATTENDANCE_ENQUIRY,
+
+    HOMEWORK_ENQUIRY,
+
+    EXAM_ENQUIRY,
+
+    NOTICE_ENQUIRY,
+
+    PAYMENT_STATUS,
+
+    PAYMENT_HISTORY,
+
+    SCHOLARSHIP_ENQUIRY,
+
+    /*
+     * ===========================================
+     * Default
+     * ===========================================
+     */
+
     UNKNOWN
 
 }
