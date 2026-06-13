@@ -1,0 +1,53 @@
+AIController
+      │
+      ▼
+AIChatService
+      │
+      ▼
+AIIntentDetector
+      │
+      ▼
+IntentType
+      │
+      ▼
+IntentRouter
+      │
+ ┌───────────────┬──────────────────┬─────────────────┐
+ │               │                  │
+ ▼               ▼                  ▼
+Structured   Knowledge        ActionHandler
+Handler      Handler                 │
+ │               │                   │
+ │               │                   ▼
+ │               │           LeadService
+ │               │
+ │               ▼
+ │      KnowledgeSearchService
+ │               │
+ │         FAQ + AITraining
+ │
+ ▼
+MstClassService
+ │
+ ▼
+Database
+
+(No Answer)
+      │
+      ▼
+OllamaIntentHandler
+      │
+      ▼
+PromptBuilder
+      │
+      ▼
+AIClient
+      │
+      ▼
+phi4-mini
+      │
+      ▼
+AIResponseParser
+      │
+      ▼
+AIResponse
